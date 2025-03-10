@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀GOGOI MODS🚀 - Big-Small Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background: url('https://i.ibb.co/nNkh4P9Y/IMG-5142.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: white;
+        }
+        .result, .loading {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none; 
+        }
+        .timer {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 10px;
+        }
+        .win-text {
+            font-size: 22px;
+            font-weight: bold;
+            color: yellow;
+            margin-top: 20px;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🚀GOGOI MODS🚀 - Big-Small Prediction</h1>
+    <h2 class="timer">Next Round in: <span id="countdown">60</span> sec</h2>
+    <p class="win-text">UNDER LEVEL 3 WIN SURE ✅</p>
+
+    <label for="periodDigits">Enter Last 3 Digits of Period:</label>
+    <input type="number" id="periodDigits" min="0" max="999" placeholder="e.g. 028">
+    <br><br>
+
+    <label for="recentBet">Enter Recent Bet Number (0-9):</label>
+    <input type="number" id="recentBet" min="0" max="9">
+    <br><br>
+    
+    <button onclick="calculatePrediction()">Predict</button>
+
+    <p class="loading" id="loadingText">Calculating...</p>
+    <p class="result" id="predictionResult"></p>
+
+    <script>
+        function startTimer() {
+            function updateTimer() {
+                let now = new Date();
+                let seconds = now.getSeconds();
+                let remainingTime = 60 - seconds;
+                document.getElementById("countdown").innerText = remainingTime;
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        function calculatePrediction() {
+            let periodDigits = document.getElementById("periodDigits").value;
+            let recentBet = parseInt(document.getElementById("recentBet").value);
+            let resultDisplay = document.getElementById("predictionResult");
+            let loadingText = document.getElementById("loadingText");
+
+            if (!periodDigits || periodDigits.length !== 3 || isNaN(periodDigits)) {
+                alert("Please enter a valid 3-digit period number.");
+                return;
+            }
+            if (isNaN(recentBet) || recentBet < 0 || recentBet > 9) {
+                alert("Please enter a valid bet number (0-9).");
+                return;
+            }
+
+            loadingText.style.display = "block"; // Show "Calculating..."
+            resultDisplay.style.display = "none"; // Hide result
+
+            let digits = periodDigits.split("").map(Number);
+            let sum = digits.reduce((a, b) => a + b, 0);
+            let resultNumber = Math.abs(sum - recentBet);
+            let prediction = resultNumber <= 4 ? "Small" : "Big";
+
+            setTimeout(() => {
+                loadingText.style.display = "none"; // Hide "Calculating..."
+                resultDisplay.innerText = `Period: ${periodDigits}, Sum: ${sum}, Result: ${resultNumber}, Prediction: ${prediction}`;
+                resultDisplay.style.display = "block";
+            }, 3000);
+        }
+
+        startTimer();
+    </script>
+</body>
+</html>
